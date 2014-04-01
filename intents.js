@@ -18,7 +18,7 @@ mongo.connect(process.env.MONGOLAB_URI, {}, function(error, db) {
       var doc = { user_id: context.user_id, user_name: context.user_name };
       doc[entities.service.value] = entities.username.value;
 
-      users.update({user_id: context.user_id}, doc, {upsert: true}, function (err, item) {
+      users.findAndModify({user_id: context.user_id}, doc, {upsert: true}, function (err, item) {
         if (err) {
           exports.reply(context, 'Error saving to mongo :(');
         } else {
