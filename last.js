@@ -39,7 +39,7 @@ exports.listensws = function (user, cb) {
     var listen = listens[0];
     if (!listen) return;
 
-    var np = [listen.artist, listen.title, lsiten.album].join(' — ');
+    var np = [listen.artist, listen.title, listen.album].join(' — ');
     np += ' [';
     if (listen.skippedAt)
       np += 'skipped ' + moment(listen.skippedAt).fromNow();
