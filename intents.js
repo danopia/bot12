@@ -9,14 +9,14 @@ mongo.connect(process.env.MONGOLAB_URI, {}, function(error, db) {
   db.collection('users', function (err, users) {
 
     exports.set_service_username = function (context, entities) {
-      var doc = {};
+      var doc = { user_id: context.user_id, user_name: context.user_name };
       doc[entities.service.value] = entities.username.value;
 
       users.update({user_id: context.user_id}, doc, {upsert: true}, function (err, item) {
         if (err) {
-          reply(context, 'Error saving to mongo');
+          exports.reply(context, 'Error saving to mongo :(');
         } else {
-          reply(context, 'I gotcha!');
+          exports.reply(context, 'I gotcha, @' + context.user_name + '!');
         }
       });
     };
