@@ -23,7 +23,7 @@ mongo.connect(process.env.MONGOLAB_URI, {}, function(error, db) {
           exports.reply(context, 'Error saving to mongo :(');
         } else {
           exports.reply(context, 'I gotcha, @' + context.user_name + '! ' +
-              entities.username.value + ' on ' _ entities.service.value);
+              entities.username.value + ' on ' + entities.service.value);
         }
       });
     };
