@@ -1,4 +1,5 @@
 var http = require('https');
+var moment = require('moment');
 
 exports.lastfm = function (user, cb) {
   var opts = {
@@ -38,6 +39,14 @@ exports.listensws = function (user, cb) {
     var listen = listens[0];
     if (!listen) return;
 
-    cb([listen.artist, listen.title, listen.album].join(' — ')); //  + ' at ' + listen.listenedAt.toString());
+    var np = [listen.artist, listen.title, lsiten.album].join(' — ');
+    np += ' [';
+    if (listen.skippedAt)
+      np += 'skipped ' + moment(listen.skippedAt).fromNow();
+    else
+      np += moment(listen.listenedAt).fromNow();
+    np += ']';
+
+    cb(np);
   });
 };
