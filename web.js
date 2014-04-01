@@ -10,7 +10,7 @@ app.get('/', function(req, res) {
   res.send('The best bot. The only bot. The not-huebot.');
 });
 
-function reply(context, message, icon) {
+function reply(context, message, icon, name) {
   var options = {
     host: context.team_domain + '.slack.com',
     port: 443,
@@ -18,6 +18,7 @@ function reply(context, message, icon) {
     path: '/services/hooks/incoming-webhook?token=' + encodeURIComponent(process.env.SLACK_POST_KEY),
     headers: {'Content-type': 'application/json'}
   };
+  icon = icon || ':ghost:';
 
   var req = http.request(options, function (res) {
     res.on('data', console.log).setEncoding('utf8');
@@ -25,7 +26,9 @@ function reply(context, message, icon) {
   req.write(JSON.stringify({
     channel: '#' + context.channel_name,
     text: message,
-    icon_emoji: ':' + (icon || 'ghost') + ':'
+    icon_emoji: (icon[0] == ':') ? icon : null,
+    icon_url:   (icon[0] == ':') ? null : icon,
+    username: name
   }));
   req.end();
 }
@@ -38,7 +41,7 @@ function handleIntent(context, outcome) {
   } else if (intents[outcome.intent]) {
     intents[outcome.intent](context, outcome.entities, outcome.confidence);
   } else {
-    reply(context, "I'm confused.");
+    reply(context, "I'm confused. " + JSON.stringify(outcome));
   }
 };
 
@@ -50,6 +53,29 @@ app.post('/slack', function (req, res) {
   wit.message(req.body, req.body.text, handleIntent);
 
   res.send('ok');
+});
+
+app.post('/slack/last', function (req, res) {
+  req.body.team_domain = 'twelfthbit';
+
+  intents._users.findOne({user_id: req.body.user_id}, function (err, item) {
+    if (err) {
+      res.send('Error reading from mongo D:');
+      console.log(err);
+    } else if (!item || !item.usernames) {
+      res.send("I have no dirt on you, bro.");
+    } else if (!item.usernames['lastfm'] && !item.usernames['listensws']) {
+      res.send("No idea what your lastfm or listens.ws usernames are.");
+    } else if (item.usernames['lastfm']) {
+      require('./last').lastfm(item.usernames['lastfm'], function (text, img) {
+        reply(req.body, text, img || ':cd:', req.body.user_name + ' is listening to');
+      });
+    } else if (item.usernames['listensws']) {
+      require('./last').listensws(item.usernames['listensws'], function (text, img) {
+        reply(req.body, text, img || ':cd:', req.body.user_name + ' is listening to');
+      });
+    }
+  });
 });
 
 var port = Number(process.env.PORT || 5000);

@@ -1,12 +1,13 @@
 var mongo = require('mongodb');
 
 exports.weather = function (context, entities) {
-  exports.reply(context, "It's sunny, bitch.", 'sunny');
+  exports.reply(context, "It's sunny, bitch.", ':sunny:');
 };
 
 mongo.connect(process.env.MONGOLAB_URI, {}, function(error, db) {
   console.log('MongoLAB connected:', error);
   db.collection('users', function (err, users) {
+    exports._users = users;
 
     exports.set_service_username = function (context, entities) {
       if (!entities.service) {
