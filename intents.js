@@ -9,6 +9,12 @@ mongo.connect(process.env.MONGOLAB_URI, {}, function(error, db) {
   db.collection('users', function (err, users) {
 
     exports.set_service_username = function (context, entities) {
+      if (!entities.service) {
+        return exports.reply(context, 'Dude name a service');
+      } else if (!entities.username) {
+        return exports.reply(context, "I didn't catch your username");
+      }
+
       var doc = { user_id: context.user_id, user_name: context.user_name };
       doc[entities.service.value] = entities.username.value;
 
@@ -16,7 +22,8 @@ mongo.connect(process.env.MONGOLAB_URI, {}, function(error, db) {
         if (err) {
           exports.reply(context, 'Error saving to mongo :(');
         } else {
-          exports.reply(context, 'I gotcha, @' + context.user_name + '!');
+          exports.reply(context, 'I gotcha, @' + context.user_name + '! ' +
+              entities.username.value + ' on ' _ entities.service.value);
         }
       });
     };
