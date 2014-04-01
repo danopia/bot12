@@ -25,7 +25,7 @@ function reply(context, message, icon) {
   req.write(JSON.stringify({
     channel: '#' + context.channel_name,
     text: message,
-    icon_emoji: ':' + (icon || ghost) + ':'
+    icon_emoji: ':' + (icon || 'ghost') + ':'
   }));
   req.end();
 }
