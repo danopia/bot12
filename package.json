@@ -1,0 +1,29 @@
+{
+  "name": "bot12",
+  "version": "0.0.1",
+  "description": "The best bot. The only bot. The not-huebot.",
+  "main": "web.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/danopia/bot12.git"
+  },
+  "keywords": [
+    "slack"
+  ],
+  "author": "Daniel Lamando",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danopia/bot12/issues"
+  },
+  "homepage": "https://github.com/danopia/bot12",
+  "dependencies": {
+    "logfmt": "^1.1.2",
+    "express": "^3.5.1"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}
