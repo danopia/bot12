@@ -24,9 +24,9 @@ exports.lastfm = function (user, cb) {
       var album = track.album ? track.album['#text'] : 'unknown';
 
       var img = (track.image && track.image.length) ? track.image[0]['#text'] : null;
-      var lastfm = '<http://last.fm/user/' + user + '|last.fm>';
-      var citation = ' [' + moment(+track.date.uts) + ', via ' + lastfm + ']';
-      cb([artist, song, album].join(' — ') + ' [' + citation + ']', img);
+      var lastfm = 'via <http://last.fm/user/' + user + '|last.fm>';
+      var citation = moment(+track.date.uts * 1000).fromNow() + ', ';
+      cb([artist, song, album].join(' — ') + ' [' + citation + lastfm + ']', img);
     })
   });
 };
