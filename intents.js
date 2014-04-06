@@ -81,11 +81,11 @@ mongo.connect(process.env.MONGOLAB_URI, {}, function(error, db) {
           res.send("No idea what " + username + "'s lastfm or listens.ws usernames are.");
         } else if (item.usernames['lastfm']) {
           require('./last').lastfm(item.usernames['lastfm'], function (text, img) {
-            exports.reply(req.body, username + " was listening to " + text, img || ':cd:');
+            exports.reply(context, username + " was listening to " + text, img || ':cd:');
           });
         } else if (item.usernames['listensws']) {
           require('./last').listensws(item.usernames['listensws'], function (text, img) {
-            exports.reply(req.body, user + " was listening to " + text, img || ':cd:');
+            exports.reply(context, username + " was listening to " + text, img || ':cd:');
           });
         }
       });
