@@ -67,5 +67,28 @@ mongo.connect(process.env.MONGOLAB_URI, {}, function(error, db) {
         }
       });
     };
+
+    exports.play_history = function (context, entities) {
+      var username = entities.username ? entities.username.value : context.user_name;
+
+      users.findOne({user_id: username}, function (err, item) {
+        if (err) {
+          res.send('Error reading from mongo!');
+          console.log(err);
+        } else if (!item || !item.usernames) {
+          res.send("I have no dirt on " + username + ", bro.");
+        } else if (!item.usernames['lastfm'] && !item.usernames['listensws']) {
+          res.send("No idea what " + username + "'s lastfm or listens.ws usernames are.");
+        } else if (item.usernames['lastfm']) {
+          require('./last').lastfm(item.usernames['lastfm'], function (text, img) {
+            exports.reply(req.body, username + " was listening to " + text, img || ':cd:');
+          });
+        } else if (item.usernames['listensws']) {
+          require('./last').listensws(item.usernames['listensws'], function (text, img) {
+            exports.reply(req.body, user + " was listening to " + text, img || ':cd:');
+          });
+        }
+      });
+    }
   });
 });
