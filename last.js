@@ -47,7 +47,7 @@ exports.listensws = function (user, cb) {
       np += 'skipped ' + moment(listen.skippedAt).fromNow();
     else
       np += moment(listen.listenedAt).fromNow();
-    np += ' via <http://listens.ws/~' + user + '|listens.ws>]';
+    np += ' via <http://listens.ws/~' + user.name + '|listens.ws>]';
 
     cb(np);
   });
