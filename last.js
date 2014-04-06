@@ -25,8 +25,8 @@ exports.lastfm = function (user, cb) {
 
       var img = (track.image && track.image.length) ? track.image[0]['#text'] : null;
       var lastfm = 'via <http://last.fm/user/' + user + '|last.fm>';
-      var citation = moment(+track.date.uts * 1000).fromNow() + ', ';
-      cb([artist, song, album].join(' — ') + ' [' + citation + lastfm + ']', img);
+      var time = track.date ? moment(+track.date.uts * 1000).fromNow() : 'right now';
+      cb([artist, song, album].join(' — ') + ' [' + time + ' ' + lastfm + ']', img);
     })
   });
 };
