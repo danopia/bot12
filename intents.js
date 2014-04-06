@@ -71,7 +71,7 @@ mongo.connect(process.env.MONGOLAB_URI, {}, function(error, db) {
     exports.play_history = function (context, entities) {
       var username = entities.username ? entities.username.value : context.user_name;
 
-      users.findOne({user_id: username}, function (err, item) {
+      users.findOne({user_name: username}, function (err, item) {
         if (err) {
           res.send('Error reading from mongo!');
           console.log(err);
