@@ -16,7 +16,7 @@ exports.time = function (context, entities) {
     } else if (to.isBefore(now)) {
       exports.reply(context, "It was " + entities.assertion.body + " like " + from.fromNow() + " :(");
     } else {
-      exports.reply(context, "It's " + entities.assertion.body + " already, and for another " + from.fromNow() + "!");
+      exports.reply(context, "It's " + entities.assertion.body + " already, and for another " + to.fromNow() + "!");
     }
     
   } else {
