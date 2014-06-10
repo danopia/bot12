@@ -6,13 +6,26 @@ exports.weather = function (context, entities) {
 };
 
 exports.time = function (context, entities) {
-  console.log(entities);
-  
-  var now  = moment(),
-      time = now.format('h:mm:ss a'),
-      date = now.format('dddd, MMMM Do, YYYY');
+  if (entities && entities.assertion) {
+    var from = moment(entities.assertion.value.from),
+        to   = moment(entities.assertion.value.to),
+        now  = moment();
+    
+    if (from.isBefore(now)) {
+      exports.reply(context, "It's not " + entities.assertion.body + " for another " + from.fromNow() + " :(");
+    } else if (to.isAfter(now)) {
+      exports.reply(context, "It was " + entities.assertion.body + " like " + from.fromNow() + " :(");
+    } else {
+      exports.reply(context, "It's " + entities.assertion.body + " already, and for another " + from.fromNow() + "!");
+    }
+    
+  } else {
+    var now  = moment(),
+        time = now.format('h:mm:ss a'),
+        date = now.format('dddd, MMMM Do, YYYY');
 
-  exports.reply(context, "It's " + time + " on " + date);
+    exports.reply(context, "It's " + time + " on " + date);
+  }
 };
 
 mongo.connect(process.env.MONGOLAB_URI, {}, function(error, db) {
