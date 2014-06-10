@@ -1,7 +1,16 @@
 var mongo = require('mongodb');
+var moment = require('moment');
 
 exports.weather = function (context, entities) {
   exports.reply(context, "It's sunny, bitch.", ':sunny:');
+};
+
+exports.time = function (context, entities) {
+  var now  = moment(),
+      time = now.format('h:mm:ss a'),
+      date = now.format('dddd, MMMM Do, YYYY');
+
+  exports.reply(context, "It's " + time + " on " + date);
 };
 
 mongo.connect(process.env.MONGOLAB_URI, {}, function(error, db) {
