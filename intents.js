@@ -11,9 +11,9 @@ exports.time = function (context, entities) {
         to   = moment(entities.assertion.value.to),
         now  = moment();
     
-    if (from.isBefore(now)) {
+    if (from.isAfter(now)) {
       exports.reply(context, "It's not " + entities.assertion.body + " for another " + from.fromNow() + " :(");
-    } else if (to.isAfter(now)) {
+    } else if (to.isBefore(now)) {
       exports.reply(context, "It was " + entities.assertion.body + " like " + from.fromNow() + " :(");
     } else {
       exports.reply(context, "It's " + entities.assertion.body + " already, and for another " + from.fromNow() + "!");
