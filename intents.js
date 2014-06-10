@@ -6,6 +6,8 @@ exports.weather = function (context, entities) {
 };
 
 exports.time = function (context, entities) {
+  console.log(entities);
+  
   var now  = moment(),
       time = now.format('h:mm:ss a'),
       date = now.format('dddd, MMMM Do, YYYY');
