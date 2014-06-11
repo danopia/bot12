@@ -31,7 +31,12 @@ exports.time = function (context, entities) {
 
 exports.simple_math = function (context, entities) {
   var expr = entities.math_expression.body;
-  exports.reply(context, expr + ' = ' + math.eval(expr));
+  
+  try {
+    exports.reply(context, expr + ' = ' + math.eval(expr));
+  } catch (ex) {
+    exports.reply(context, expr + ': ' + ex.message);
+  }
 };
 
 mongo.connect(process.env.MONGOLAB_URI, {}, function(error, db) {
