@@ -1,5 +1,6 @@
 var mongo = require('mongodb');
 var moment = require('moment');
+var math = require('mathjs')();
 
 exports.weather = function (context, entities) {
   exports.reply(context, "It's sunny, bitch.", ':sunny:');
@@ -26,6 +27,11 @@ exports.time = function (context, entities) {
 
     exports.reply(context, "It's " + time + " on " + date);
   }
+};
+
+exports.simple_math = function (context, entities) {
+  var expr = entities.math_expression.body;
+  exports.reply(context, expr + ' = ' + math.expr(expr));
 };
 
 mongo.connect(process.env.MONGOLAB_URI, {}, function(error, db) {
