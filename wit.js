@@ -4,7 +4,10 @@ exports.message = function (context, line, cb) {
   var options = {
     host: 'api.wit.ai',
     path: '/message?q=' + encodeURIComponent(line),
-    headers: {'Authorization': 'Bearer ' + process.env.WIT_KEY}
+    headers: {
+      Authorization: 'Bearer ' + process.env.WIT_KEY,
+      Accept: 'application/vnd.wit.20140610',
+    }
 	};
 
 	http.get(options, function(res) {
