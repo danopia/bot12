@@ -75,8 +75,8 @@ app.post('/slack/last', function (req, res) {
         reply(req.body, text, img || ':cd:', req.body.user_name + ' is listening to');
       });
     }
-    
-    res.send('ok');
+
+    res.send('');
   });
 });
 
