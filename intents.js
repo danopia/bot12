@@ -19,6 +19,10 @@ exports.hey = function (context, entities) {
   exports.reply(context, greetings[Math.floor(Math.random() * greetings.length)]);
 };
 
+exports.ping = function (context, entities) {
+  exports.reply(context, "Pong! I'm alive :)");
+};
+
 exports.time = function (context, entities) {
   if (entities && entities.assertion) {
     var from = moment(entities.assertion.value.from),
