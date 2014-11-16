@@ -6,12 +6,25 @@ exports.weather = function (context, entities) {
   exports.reply(context, "It's sunny, bitch.", ':sunny:');
 };
 
+exports.fixed = function (context, entities) {
+  exports.reply(context, entities.response ? entities.response.body : "Are you tryina' be funny, punk?");
+};
+
+exports.echo = function (context, entities) {
+  exports.reply(context, entities.message_body ? entities.message_body.body : "Okay, I didn't catch that.");
+};
+
+var greetings = ['Hey!', 'Howdy!', "'sup?", 'Yo!', 'Hey dude', "What's good?", 'Hey'];
+exports.hey = function (context, entities) {
+  exports.reply(context, greetings[Math.floor(Math.random() * greetings.length)]);
+};
+
 exports.time = function (context, entities) {
   if (entities && entities.assertion) {
     var from = moment(entities.assertion.value.from),
         to   = moment(entities.assertion.value.to),
         now  = moment();
-    
+
     if (from.isAfter(now)) {
       exports.reply(context, "It's not " + entities.assertion.body + " for " + from.fromNow(true) + " :(");
     } else if (to.isBefore(now)) {
@@ -19,7 +32,7 @@ exports.time = function (context, entities) {
     } else {
       exports.reply(context, "It's " + entities.assertion.body + " already, and for " + to.fromNow(true) + "!");
     }
-    
+
   } else {
     var now  = moment(),
         time = now.format('h:mm:ss a'),
@@ -31,7 +44,7 @@ exports.time = function (context, entities) {
 
 exports.simple_math = function (context, entities) {
   var expr = entities.math_expression.body;
-  
+
   try {
     exports.reply(context, expr + ' = ' + math.eval(expr));
   } catch (ex) {
