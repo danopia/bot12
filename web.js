@@ -46,7 +46,8 @@ function handleIntent(context, outcome) {
       message: "I'm confused.",
       fallback: JSON.stringify(outcome),
       color: 'warning',
-      text: 'Unhandled intent `' + outcome.intent + '` (' + (outcome.confidence*100) + '% confidence)',
+      text: 'Unhandled intent `' + outcome.intent + '`',
+      pretext: (outcome.confidence*100) + '% confidence',
       fields: Object.keys(outcome.entities).map(function (entity) {
         console.log(outcome.entities[entity]);
         var value, data = outcome.entities[entity];
