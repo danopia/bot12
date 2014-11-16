@@ -29,7 +29,7 @@ function reply(context, message, icon, name) {
     icon_emoji: (icon[0] == ':') ? icon : null,
     icon_url:   (icon[0] == ':') ? null : icon,
     username: name,
-    attachment: message.message && message,
+    attachments: message.message ? [message] : [],
   }));
   req.end();
 }
