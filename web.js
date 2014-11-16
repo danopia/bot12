@@ -49,13 +49,17 @@ function handleIntent(context, outcome) {
       text: 'Unhandled intent `' + outcome.intent + '` (' + (outcome.confidence*100) + '% confidence)',
       fields: Object.keys(outcome.entities).map(function (entity) {
         console.log(outcome.entities[entity]);
-        var data = outcome.entities[entity];
-        if (data[0]) data = data[0];
+        var value, data = outcome.entities[entity];
+
+        if (data[0])
+          value = data.map(function (d) { return d.value; }).join('; ');
+        else
+          value = data.value;
 
         return {
           title: entity,
-          value: data.value,
-          short: data.value.length < 50,
+          value: value,
+          short: value.length < 50,
         };
       }),
     });
