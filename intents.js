@@ -7,11 +7,11 @@ exports.weather = function (context, entities) {
 };
 
 exports.fixed = function (context, entities) {
-  exports.reply(context, entities.response ? entities.response.body : "Are you tryina' be funny, punk?");
+  exports.reply(context, entities.response ? entities.response.value : "Are you tryina' be funny, punk?");
 };
 
 exports.echo = function (context, entities) {
-  exports.reply(context, entities.message_body ? entities.message_body.body : "Okay, I didn't catch that.");
+  exports.reply(context, entities.message_body ? entities.message_body.value : "Okay, I didn't catch that.");
 };
 
 var greetings = ['Hey!', 'Howdy!', "'sup?", 'Yo!', 'Hey dude', "What's good?", 'Hey'];
