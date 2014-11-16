@@ -25,11 +25,11 @@ function reply(context, message, icon, name) {
   });
   req.write(JSON.stringify({
     channel: '#' + context.channel_name,
-    text: message.message || message,
+    text: message.fallback ? '' : message,
     icon_emoji: (icon[0] == ':') ? icon : null,
     icon_url:   (icon[0] == ':') ? null : icon,
     username: name,
-    attachments: message.message ? [message] : [],
+    attachments: message.fallback ? [message] : [],
   }));
   req.end();
 }
@@ -39,15 +39,15 @@ intents.reply = reply;
 function handleIntent(context, outcome) {
   if (!outcome) {
     reply(context, "My wit has run out.");
+  } else if (outcome.confidence < 0.5) {
+    reply(context, "I'm sorry, were you talking about " + outcome.intent + "? Please speak up!");
   } else if (intents[outcome.intent]) {
     intents[outcome.intent](context, outcome.entities, outcome.confidence);
   } else {
     reply(context, {
-      message: "I'm confused.",
       fallback: JSON.stringify(outcome),
       color: 'warning',
-      text: 'Unhandled intent `' + outcome.intent + '`',
-      pretext: (outcome.confidence*100) + '% confidence',
+      text: "I don't know how to handle `" + outcome.intent + '` (' + (outcome.confidence*100) + '% confidence)',
       fields: Object.keys(outcome.entities).map(function (entity) {
         console.log(outcome.entities[entity]);
         var value, data = outcome.entities[entity];
