@@ -25,10 +25,11 @@ function reply(context, message, icon, name) {
   });
   req.write(JSON.stringify({
     channel: '#' + context.channel_name,
-    text: message,
+    text: message.message || message,
     icon_emoji: (icon[0] == ':') ? icon : null,
     icon_url:   (icon[0] == ':') ? null : icon,
-    username: name
+    username: name,
+    attachment: message.message && message,
   }));
   req.end();
 }
@@ -41,7 +42,19 @@ function handleIntent(context, outcome) {
   } else if (intents[outcome.intent]) {
     intents[outcome.intent](context, outcome.entities, outcome.confidence);
   } else {
-    reply(context, "I'm confused. " + JSON.stringify(outcome));
+    reply(context, {
+      message: "I'm confused.",
+      fallback: JSON.stringify(outcome),
+      color: 'warning',
+      text: 'Unhandled intent `' + outcome.intent + '` (' + (outcome.confidence*100) + '% confidence)',
+      fields: Object.keys(outcome.entities).map(function (entity) {
+        return {
+          title: entity,
+          value: outcome.entities[entity].value,
+          short: outcome.entities[entity].value.length < 50,
+        };
+      }),
+    });
   }
 };
 
