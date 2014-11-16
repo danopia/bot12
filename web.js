@@ -50,8 +50,8 @@ function handleIntent(context, outcome) {
       fields: Object.keys(outcome.entities).map(function (entity) {
         return {
           title: entity,
-          value: outcome.entities[entity].value,
-          short: outcome.entities[entity].value.length < 50,
+          value: outcome.entities[entity][0].value,
+          short: outcome.entities[entity][0].value.length < 50,
         };
       }),
     });
