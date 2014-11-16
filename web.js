@@ -48,6 +48,7 @@ function handleIntent(context, outcome) {
       color: 'warning',
       text: 'Unhandled intent `' + outcome.intent + '` (' + (outcome.confidence*100) + '% confidence)',
       fields: Object.keys(outcome.entities).map(function (entity) {
+        console.log(outcome.entities[entity]);
         return {
           title: entity,
           value: outcome.entities[entity][0].value,
