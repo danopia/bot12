@@ -1,9 +1,17 @@
 var mongo = require('mongodb');
 var moment = require('moment');
 var math = require('mathjs')();
+var Wunderground = require('node-weatherunderground');
 
 exports.weather = function (context, entities) {
-  exports.reply(context, "It's sunny, bitch.", ':sunny:');
+  var api = new Wunderground(process.env.WUNDERGROUND_KEY, entities.location.value);
+  api.conditions('', function (err, data) {
+    if (err)
+      throw err;
+    else {
+      exports.reply(context, JSON.stringify(data), ':sunny:');
+    }
+  });
 };
 
 exports.fixed = function (context, entities) {
