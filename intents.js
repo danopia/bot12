@@ -8,10 +8,14 @@ exports.weather = function (context, entities) {
   api.conditions('', function (err, data) {
     if (err) throw err;
 
-    console.log(data);
-    var time = moment(data.observation_epoch * 1000).fromNow();
-    var msg = data.display_location.full + ' is ' + data.weather + ' and ' + data.temp_f + 'F ' + ' with ' + data.wind_mph + 'MPH winds, updated ' + time + '. Provided by Weather Underground';
-    exports.reply(context, msg, data.icon_url || ':sunny:');
+    if (data) {
+      console.log(data);
+      var time = moment(data.observation_epoch * 1000).fromNow();
+      var msg = data.display_location.full + ' is ' + data.weather + ' and ' + data.temp_f + 'F ' + ' with ' + data.wind_mph + 'MPH winds, updated ' + time + '. Provided by Weather Underground';
+      exports.reply(context, msg, data.icon_url || ':sunny:');
+    } else {
+      exports.reply(context, 'My sources have no idea where you are asking about.');
+    }
   });
 };
 
