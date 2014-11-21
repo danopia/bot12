@@ -7,10 +7,10 @@ exports.weather = function (context, entities) {
   var api = new Wunderground(process.env.WUNDERGROUND_KEY, entities.location.value);
   api.conditions('', function (err, data) {
     if (err) throw err;
-    
+
     console.log(data);
     var time = moment(data.observation_epoch * 1000).fromNow();
-    var msg = data.display_location.full + ' is ' + data.weather + ' and ' + data.temp_f + 'F ' + ' with ' + data.wind_mph + 'MPH winds. Provided by Weather Underground';
+    var msg = data.display_location.full + ' is ' + data.weather + ' and ' + data.temp_f + 'F ' + ' with ' + data.wind_mph + 'MPH winds, updated ' + time + '. Provided by Weather Underground';
     exports.reply(context, msg, data.icon_url || ':sunny:');
   });
 };
