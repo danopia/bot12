@@ -39,7 +39,7 @@ intents.reply = reply;
 function handleIntent(context, outcome) {
   if (!outcome) {
     reply(context, "My wit has run out.");
-  } else if (outcome.confidence < 0.5) {
+  } else if (outcome.confidence < 0.3) {
     reply(context, "I'm sorry, were you talking about `" + outcome.intent + "`? Please speak up!");
   } else if (intents[outcome.intent]) {
     intents[outcome.intent](context, outcome.entities, outcome.confidence);
